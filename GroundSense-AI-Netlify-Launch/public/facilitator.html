@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GroundSense AI · Facilitator</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="shell">
+  <div class="brand"><div class="brand-mark">Ground<span>Sense</span> AI</div><span class="badge">Facilitator</span></div>
+
+  <section class="card hero">
+    <div class="eyebrow">Control room</div>
+    <h1>Run the room.</h1>
+    <p class="lead">Create a session, move every table through the experience, and watch progress without touching participant devices.</p>
+  </section>
+
+  <section class="card" id="setupCard">
+    <h2>Create / open session</h2>
+    <div class="grid">
+      <div><label>Session code</label><input id="fCode" maxlength="10" placeholder="AI27"></div>
+      <div><label>Facilitator PIN</label><input id="fPin" type="password" maxlength="12" placeholder="4–12 characters"></div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="createSession">Create session</button>
+      <button class="btn secondary" id="openSession">Open existing</button>
+      <a class="btn ghost" href="/print.html" target="_blank" style="text-decoration:none">Print Ground Stations</a>
+    </div>
+    <p class="muted" id="setupMsg"></p>
+  </section>
+
+  <section id="controlRoom" class="hidden">
+    <section class="card">
+      <div class="status-row">
+        <div><div class="kicker" id="fIdentity">Session</div><h2 id="fPhase">GROUND</h2></div>
+        <span class="phase-pill" id="fPhasePill">GROUND</span>
+      </div>
+      <div class="actions">
+        <button class="btn secondary phaseBtn" data-phase="GROUND">1 · Ground</button>
+        <button class="btn phaseBtn" data-phase="AI">2 · AI</button>
+        <button class="btn warn phaseBtn" data-phase="CONTEXT">3 · Human Context</button>
+        <button class="btn ghost phaseBtn" data-phase="DEBRIEF">4 · Debrief</button>
+      </div>
+      <p class="muted">Table devices poll automatically and should switch within a few seconds.</p>
+    </section>
+
+    <section class="card" id="facilCue">
+      <div class="eyebrow">Facilitator cue</div>
+      <h2 id="cueTitle">Send one person at a time.</h2>
+      <p id="cueText" class="lead">Participants visit the Ground Stations and return with a 4-digit code. Do not let them send all eight people out at once.</p>
+    </section>
+
+    <section class="card">
+      <div class="status-row"><h2>Table progress</h2><span class="badge" id="lastUpdated">—</span></div>
+      <div id="tableList" class="table-list"><p class="muted">No table activity yet.</p></div>
+    </section>
+
+    <section class="card">
+      <h2>Final Ground Update</h2>
+      <div class="callout danger">
+        <strong>Keep this hidden until Human Context.</strong>
+        <p style="margin:8px 0 0">The resident who offered to teach cooking recently lost her husband. She did not volunteer because she wants to “run a programme”. She said she misses having people around and wants something meaningful to contribute.</p>
+      </div>
+    </section>
+  </section>
+  <footer>Tip: keep this page on the facilitator laptop. Participants only need the main site.</footer>
+</main>
+<script src="/facilitator.js" type="module"></script>
+</body>
+</html>

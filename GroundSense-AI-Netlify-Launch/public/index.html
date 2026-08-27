@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GroundSense AI</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <div class="brand">
+      <div class="brand-mark">Ground<span>Sense</span> AI</div>
+      <div class="badge" id="connectionBadge">● Workshop</div>
+    </div>
+
+    <section id="joinView" class="card hero">
+      <div class="eyebrow">10–15 minute grassroots simulation</div>
+      <h1>Know the ground.<br>Use AI wisely.</h1>
+      <p class="lead">Your table has one mission: understand why residents are not participating — then decide what to do next.</p>
+      <form id="joinForm">
+        <div class="grid">
+          <div>
+            <label for="sessionCode">Session code</label>
+            <input id="sessionCode" maxlength="10" autocomplete="off" placeholder="e.g. AI27" required>
+          </div>
+          <div>
+            <label for="teamNo">Table number</label>
+            <input id="teamNo" type="number" min="1" max="30" placeholder="e.g. 4" required>
+          </div>
+        </div>
+        <div class="actions"><button class="btn" type="submit">Join workshop</button></div>
+        <p id="joinError" class="muted" role="alert"></p>
+      </form>
+    </section>
+
+    <section id="workshopView" class="hidden">
+      <div class="card">
+        <div class="status-row">
+          <div>
+            <div class="kicker" id="identity">Session — · Table —</div>
+            <h2 id="phaseTitle">Ground Mode</h2>
+          </div>
+          <span class="phase-pill" id="phasePill">GROUND</span>
+        </div>
+      </div>
+
+      <section id="phaseGround">
+        <div class="card hero">
+          <div class="eyebrow">Round 1 · Human process</div>
+          <h1>Go find out.</h1>
+          <p class="lead">Only <strong>one person from your table leaves at a time.</strong> Visit a Ground Station, listen/read carefully, return to your table, and enter its 4-digit return code.</p>
+          <div class="callout warn"><strong>Do not send everyone at once.</strong> The friction is part of the experience.</div>
+        </div>
+        <div class="card">
+          <div class="status-row">
+            <div>
+              <div class="kicker">Signals brought back</div>
+              <div class="big-number"><span id="foundCount">0</span><span class="muted"> / 8</span></div>
+            </div>
+            <div style="min-width:210px;flex:1;max-width:360px">
+              <div class="progress"><span id="foundBar" style="width:0%"></span></div>
+            </div>
+          </div>
+          <form id="discoverForm">
+            <label for="stationCode">4-digit return code</label>
+            <input id="stationCode" inputmode="numeric" maxlength="4" placeholder="Enter code brought back">
+            <div class="actions"><button class="btn" type="submit">Add ground signal</button></div>
+            <p id="discoverMessage" class="muted" role="status"></p>
+          </form>
+          <div id="signalsList"></div>
+        </div>
+        <div class="card">
+          <h2>Your human read</h2>
+          <p class="muted">From what you managed to gather, what do you think is actually stopping participation?</p>
+          <textarea id="humanRead" placeholder="Write your table's working hypothesis…"></textarea>
+          <div class="actions"><button class="btn secondary" id="saveHumanRead" type="button">Lock our human read</button><span id="humanSaved" class="muted"></span></div>
+        </div>
+      </section>
+
+      <section id="phaseAI" class="hidden">
+        <div class="card hero">
+          <div class="eyebrow">Round 2 · AI-supported synthesis</div>
+          <h1>Now connect the data.</h1>
+          <p class="lead">Your AI copilot can work across information already collected through digital channels — and combine it with the signals your team brought back from the ground.</p>
+          <div class="source-list">
+            <span class="source-chip">Resident feedback forms</span>
+            <span class="source-chip">Attendance records</span>
+            <span class="source-chip">Volunteer sign-ups</span>
+            <span class="source-chip">Programme notes</span>
+            <span class="source-chip">Complaint logs</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="grid3">
+            <div class="stat"><strong id="groundStat">0</strong><span class="muted">ground signals</span></div>
+            <div class="stat"><strong>27</strong><span class="muted">digital inputs</span></div>
+            <div class="stat"><strong>5</strong><span class="muted">data channels</span></div>
+          </div>
+          <div class="actions">
+            <button class="btn" id="analyseBtn" type="button">✨ Analyse with AI</button>
+            <span id="aiStatus" class="muted"></span>
+          </div>
+        </div>
+        <div id="analysisResult" class="hidden">
+          <div class="card">
+            <div class="status-row"><h2>AI synthesis</h2><span class="badge" id="aiModeBadge">Live AI</span></div>
+            <div class="ai-grid">
+              <div class="ai-box"><h3>🔎 Patterns</h3><ul id="patterns"></ul></div>
+              <div class="ai-box"><h3>💎 Community assets</h3><ul id="assets"></ul></div>
+              <div class="ai-box"><h3>⚠️ Watch-outs</h3><ul id="cautions"></ul></div>
+              <div class="ai-box"><h3>➡️ Possible next step</h3><p id="nextStep"></p></div>
+            </div>
+            <div class="divider"></div>
+            <p><strong>Data limitation:</strong> <span id="dataLimit"></span></p>
+            <p class="muted" id="confidenceNote"></p>
+          </div>
+          <div class="card">
+            <h2>Compare it with your table</h2>
+            <p class="muted">What did AI surface that your team missed? What did your team understand that the data alone did not show?</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="phaseContext" class="hidden">
+        <div class="card hero">
+          <div class="eyebrow">Round 3 · Human context</div>
+          <h1>Go back to the ground.</h1>
+          <p class="lead"><strong>Send one representative forward.</strong> There is one final Ground Update that is deliberately not on this screen.</p>
+          <div class="callout">When your representative returns, let them tell the table what they learned. Then decide whether the AI-supported recommendation still stands.</div>
+        </div>
+        <div class="card">
+          <h2>What changes now?</h2>
+          <label for="adaptation">How would you adapt your approach after hearing the Ground Update?</label>
+          <textarea id="adaptation" placeholder="Our table would now…"></textarea>
+          <div class="actions">
+            <button class="btn" id="submitAdaptation" type="button">Submit our human decision</button>
+            <span id="adaptationStatus" class="muted"></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="phaseDebrief" class="hidden">
+        <div class="card hero">
+          <div class="eyebrow">Debrief</div>
+          <h1>Same community.<br>More context.<br>Better decision.</h1>
+          <p class="lead">AI can shorten the distance between information and action. It does not remove the need to know the people behind the information.</p>
+        </div>
+        <div class="card">
+          <div class="grid">
+            <div class="ai-box">
+              <h3>🤖 AI can help</h3>
+              <p>Process volume<br>Connect information<br>Spot patterns<br>Surface possibilities<br>Draft and organise</p>
+            </div>
+            <div class="ai-box">
+              <h3>👣 GRLs still need to</h3>
+              <p>Listen on the ground<br>Understand context<br>Build relationships<br>Exercise judgement<br>Take responsibility</p>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <h2>Let AI process the information.<br>Let people know the people.</h2>
+          <p class="muted">AI is only as grounded as the context and data available to it.</p>
+        </div>
+      </section>
+    </section>
+
+    <footer>This workshop uses fictional resident data. Real resident information should only be used under your organisation's approved privacy and data-handling arrangements.</footer>
+  </main>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
