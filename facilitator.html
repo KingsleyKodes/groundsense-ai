@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f4f6f2">
+  <title>GroundSense AI · Facilitator</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="shell">
+  <header class="topbar"><div class="brand">Ground<span>Sense</span> AI</div><div class="connection online"><span class="connection-dot"></span><span>Facilitator</span></div></header>
+
+  <section id="setupView">
+    <div class="card hero tint"><div class="eyebrow">Facilitator control room</div><h1>Run the room.</h1><p class="lead">Create or reopen a session, then move every table through the experience from one screen.</p></div>
+    <div class="card">
+      <h2>Start a session</h2>
+      <div class="grid2">
+        <div>
+          <label for="fCode">Session code</label>
+          <div style="display:grid;grid-template-columns:1fr auto;gap:7px"><input id="fCode" maxlength="10" autocomplete="off" autocapitalize="characters" placeholder="AI27"><button id="generateCode" class="btn secondary" type="button">Generate</button></div>
+          <p class="field-help">Short and easy for participants to type.</p>
+        </div>
+        <div><label for="fPin">Facilitator PIN</label><input id="fPin" type="password" maxlength="20" autocomplete="current-password" placeholder="4–20 characters"><p class="field-help">Used only for facilitator controls.</p></div>
+      </div>
+      <div class="actions"><button id="createSession" class="btn large" type="button">Create new session</button><button id="openSession" class="btn secondary large" type="button">Open existing</button></div>
+      <p id="setupMsg" class="field-help" role="alert"></p>
+    </div>
+    <div class="card flat"><a class="btn ghost full" href="/print.html" target="_blank" rel="noopener">Open printable Ground Stations</a></div>
+  </section>
+
+  <section id="controlRoom" class="hidden">
+    <div class="card tint">
+      <div class="fac-session">
+        <div><div class="eyebrow">Live session</div><div class="session-code" id="fSessionCode">—</div><div id="participantUrl" class="field-help"></div></div>
+        <div style="text-align:right"><div class="small strong muted">TIME IN PHASE</div><div class="timer" id="phaseTimer">00:00</div><div id="suggestedTime" class="field-help">Suggested: 03:00</div></div>
+      </div>
+      <div class="actions"><button id="copyJoinLink" class="btn secondary" type="button">Copy participant link</button><a href="/print.html" target="_blank" rel="noopener" class="btn ghost" style="text-decoration:none">Print stations</a></div>
+      <div class="phase-strip">
+        <div class="phase-step" data-fstep="GROUND">1 · Ground</div><div class="phase-step" data-fstep="AI">2 · AI</div><div class="phase-step" data-fstep="CONTEXT">3 · Context</div><div class="phase-step" data-fstep="DEBRIEF">4 · Debrief</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="phase-header"><div><div class="eyebrow">Current phase</div><h2 id="fPhase">GROUND</h2></div><span id="aiReadyBadge" class="result-tag">Checking AI…</span></div>
+      <div class="phase-controls">
+        <button id="advancePhase" class="btn" type="button">Advance to AI Mode →</button>
+        <button id="backPhase" class="btn secondary" type="button" disabled>← Back</button>
+      </div>
+      <p class="field-help">Table devices should switch automatically within a few seconds.</p>
+    </div>
+
+    <div class="card" id="cueCard">
+      <div class="eyebrow">Facilitator cue</div><h2 id="cueTitle">Send one runner at a time.</h2>
+      <div class="cue-grid"><div class="cue"><strong>Say</strong><p id="cueSay"></p></div><div class="cue"><strong>Do</strong><p id="cueDo"></p></div><div class="cue"><strong>Watch for</strong><p id="cueWatch"></p></div></div>
+    </div>
+
+    <div class="card">
+      <div class="phase-header"><div><div class="eyebrow">Live progress</div><h2><span id="joinedCount">0</span> tables joined</h2></div><span id="lastUpdated" class="status-text">—</span></div>
+      <div id="tableList" class="table-list"><p class="muted">Waiting for tables to join…</p></div>
+    </div>
+
+    <div class="card">
+      <div class="phase-header"><div><div class="eyebrow">Facilitator only</div><h2>Final Ground Update</h2></div><button id="toggleReveal" class="btn secondary" type="button">Reveal text</button></div>
+      <div id="finalReveal" class="reveal-panel hidden"><p class="reveal-text">The resident who offered to teach cooking recently lost her husband. She said she misses having people around and wants something meaningful to contribute. She is not simply an available programme resource; she may also be looking for connection and purpose.</p><p class="field-help">Keep this off participant screens until the Human Context phase. Have one representative from each table come forward to receive it.</p></div>
+    </div>
+
+    <div class="card flat">
+      <div class="actions between"><button id="returnSetup" class="link-btn" type="button">← Change session</button><button id="resetSession" class="btn danger" type="button">Reset table data</button></div>
+      <p class="field-help">Reset clears joined tables, signals, hypotheses, AI results and decisions, but keeps this session code and PIN.</p>
+    </div>
+  </section>
+
+  <div id="fToast" class="toast hidden" role="status" aria-live="polite"></div>
+  <footer>Recommended rehearsal: run one full table through all four phases before the room opens.</footer>
+</main>
+<script src="/facilitator.js" type="module"></script>
+</body>
+</html>

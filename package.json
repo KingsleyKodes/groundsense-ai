@@ -1,0 +1,12 @@
+{
+  "name": "groundsense-ai",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check public/app.js && node --check public/facilitator.js && node --check netlify/functions/session.mjs && node --check netlify/functions/team.mjs && node --check netlify/functions/discover.mjs && node --check netlify/functions/analyse.mjs && node --check netlify/shared/lib.mjs && node --check netlify/shared/data.mjs"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^10.0.0"
+  }
+}
