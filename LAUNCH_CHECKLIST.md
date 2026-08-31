@@ -1,14 +1,16 @@
-# GroundSense AI v2.7 — Launch Checklist
+# GroundSense AI v2.8 — Launch Checklist
 
-- [ ] Resident voices card is tappable.
-- [ ] Feedback mix card is tappable.
-- [ ] All four theme bars are tappable.
-- [ ] Selected dashboard item is visually highlighted.
-- [ ] Detail panel changes when each item is selected.
-- [ ] Resident detail shows captured and missing profiles.
-- [ ] Mix detail explains that the percentage is a coded balance, not a satisfaction score.
-- [ ] Theme detail shows resident evidence, broader feedback evidence and a next move.
-- [ ] Large-text readability is preserved.
-- [ ] All 256 possible resident-profile subsets pass backend tests.
-- [ ] Older cached analysis results are regenerated under schema v7.
-- [ ] No external AI API is required.
+- [ ] No drill-down auto-opens.
+- [ ] Resident voices opens details.
+- [ ] Feedback mix opens details.
+- [ ] Each Top theme opens details.
+- [ ] Phone shows a bottom sheet.
+- [ ] Tablet/desktop shows a right-side drawer.
+- [ ] Close button works.
+- [ ] Backdrop closes the detail view.
+- [ ] Escape closes the detail view.
+- [ ] Downward swipe closes the mobile sheet.
+- [ ] Selected dashboard item remains highlighted.
+- [ ] Closing returns focus to the tapped item.
+- [ ] Page behind the detail view does not scroll.
+- [ ] All 256 resident-profile subsets still pass backend tests.

@@ -78,10 +78,11 @@ function clearWorkshopUi(){
   $("#needsAttention").textContent="";
   $("#recommendedAction").textContent="";
   state.activeDetail=null;
+  closeDashboardDetail({restoreFocus:false});
   $("#detailEyebrow").textContent="Explore the dashboard";
-  $("#detailTitle").textContent="Tap a theme to see more";
+  $("#detailTitle").textContent="Dashboard detail";
   $("#detailBadge").textContent="Interactive";
-  $("#detailSummary").textContent="Select Resident voices, Feedback mix, or any theme bar above.";
+  $("#detailSummary").textContent="";
   $("#detailBody").innerHTML="";
   $("#mixValue").textContent="50%";
   $("#mixLabel").textContent="Mixed feedback";
@@ -157,6 +158,39 @@ function setActiveTrigger(key){
   });
 }
 
+
+let detailReturnFocus=null;
+let sheetTouchStartY=null;
+let sheetTouchCurrentY=null;
+
+function openDashboardDetail(){
+  const overlay=$("#detailOverlay");
+  const panel=$("#detailPanel");
+  if(!overlay||!panel)return;
+  detailReturnFocus=document.activeElement;
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden","false");
+  document.body.classList.add("detail-open");
+  requestAnimationFrame(()=>panel.focus());
+}
+
+function closeDashboardDetail({restoreFocus=true}={}){
+  const overlay=$("#detailOverlay");
+  if(!overlay)return;
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden","true");
+  document.body.classList.remove("detail-open");
+  $("#detailPanel")?.style.removeProperty("--sheet-drag");
+  state.activeDetail=null;
+  setActiveTrigger("__none__");
+  if(restoreFocus&&detailReturnFocus&&typeof detailReturnFocus.focus==="function"){
+    requestAnimationFrame(()=>detailReturnFocus.focus());
+  }
+  detailReturnFocus=null;
+}
+
+function finishDashboardDetail(){ openDashboardDetail(); }
+
 function showDashboardDetail(kind,key=null){
   const out=state.analysis?.result;
   if(!out)return;
@@ -171,7 +205,7 @@ function showDashboardDetail(kind,key=null){
     $("#detailBody").innerHTML=`
       <div class="detail-section"><strong>Captured</strong><div class="detail-chips">${chips(data.captured||[],"captured")}</div></div>
       <div class="detail-section"><strong>Missing voices</strong><div class="detail-chips">${chips(data.missing||[],"missing")}</div></div>`;
-    state.activeDetail="voices";setActiveTrigger("voices");return;
+    state.activeDetail="voices";setActiveTrigger("voices");finishDashboardDetail();return;
   }
 
   if(kind==="mix"){
@@ -187,7 +221,7 @@ function showDashboardDetail(kind,key=null){
         <div><span class="mini-label">Strongest positive</span><strong>${escapeHtml(data.strongestPositive||out.topPositive?.label||"—")}</strong></div>
         <div><span class="mini-label">Strongest improvement</span><strong>${escapeHtml(data.strongestImprovement||out.topFriction?.label||"—")}</strong></div>
       </div>`;
-    state.activeDetail="mix";setActiveTrigger("mix");return;
+    state.activeDetail="mix";setActiveTrigger("mix");finishDashboardDetail();return;
   }
 
   if(kind==="theme"&&key){
@@ -203,7 +237,7 @@ function showDashboardDetail(kind,key=null){
       <div class="evidence-line"><span class="evidence-number">${Number(data.broaderCount)||0}</span><span>additional post-event feedback items also point here</span></div>
       ${(data.residentSources||[]).length?`<div class="detail-section"><strong>Resident profiles</strong><div class="detail-chips">${chips(data.residentSources,"captured")}</div></div>`:""}
       <div class="detail-action"><span>Next move</span><p>${escapeHtml(data.action||"Use this theme to guide the next improvement.")}</p></div>`;
-    state.activeDetail=key;setActiveTrigger(key);
+    state.activeDetail=key;setActiveTrigger(key);finishDashboardDetail();
   }
 }
 
@@ -246,11 +280,7 @@ function renderAnalysis(analysis){
   $("#analysisResult").classList.remove("hidden");
   $("#analyseBtn").textContent="Dashboard ready ✓";
 
-  const firstTheme=(out.topThemes||[])[0]?.key;
-  if(state.activeDetail==="voices")showDashboardDetail("voices");
-  else if(state.activeDetail==="mix")showDashboardDetail("mix");
-  else if(state.activeDetail&&out.interactive?.themes?.[state.activeDetail])showDashboardDetail("theme",state.activeDetail);
-  else if(firstTheme)showDashboardDetail("theme",firstTheme);
+  closeDashboardDetail({restoreFocus:false});
 }
 
 async function refresh(){
@@ -364,6 +394,38 @@ $("#themeBars").addEventListener("click",event=>{
   const button=event.target.closest(".interactive-theme");
   if(button)showDashboardDetail("theme",button.dataset.theme);
 });
+
+
+$("#detailClose").addEventListener("click",()=>closeDashboardDetail());
+$("#detailBackdrop").addEventListener("click",()=>closeDashboardDetail());
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"&&$("#detailOverlay").classList.contains("open")) closeDashboardDetail();
+});
+
+$("#detailPanel").addEventListener("touchstart",event=>{
+  if(window.matchMedia("(max-width: 700px)").matches){
+    sheetTouchStartY=event.touches[0]?.clientY??null;
+    sheetTouchCurrentY=sheetTouchStartY;
+  }
+},{passive:true});
+
+$("#detailPanel").addEventListener("touchmove",event=>{
+  if(sheetTouchStartY===null||!window.matchMedia("(max-width: 700px)").matches)return;
+  sheetTouchCurrentY=event.touches[0]?.clientY??sheetTouchStartY;
+  const delta=Math.max(0,sheetTouchCurrentY-sheetTouchStartY);
+  $("#detailPanel").style.setProperty("--sheet-drag",`${Math.min(delta,140)}px`);
+},{passive:true});
+
+$("#detailPanel").addEventListener("touchend",()=>{
+  if(sheetTouchStartY===null)return;
+  const delta=Math.max(0,(sheetTouchCurrentY??sheetTouchStartY)-sheetTouchStartY);
+  $("#detailPanel").style.removeProperty("--sheet-drag");
+  sheetTouchStartY=null;
+  sheetTouchCurrentY=null;
+  if(delta>80)closeDashboardDetail();
+});
+
 
 document.addEventListener("visibilitychange",()=>{if(state.joined&&!state.pollBusy){stopPolling();refresh();}});
 

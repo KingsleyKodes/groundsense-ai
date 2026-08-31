@@ -1,36 +1,20 @@
-# GroundSense AI v2.7 — Interactive Dynamic Dashboard
+# GroundSense AI v2.8 — Responsive Interactive Dashboard
 
-The Family Day dashboard is now interactive while remaining large-text and workshop-friendly.
+v2.8 reworks the dashboard drill-down for mobile usability.
 
-## What participants can tap
+## Phone / small tablet
+Tapping Resident voices, Feedback mix, or a Top theme opens a bottom sheet. The sheet appears in the current viewport, keeps the dashboard behind it, supports a large Close button, backdrop-to-close, Escape, and a downward swipe-to-close gesture.
 
-### Resident voices
-Shows:
-- which resident archetypes the table captured
-- which resident voices are missing
-- a short coverage interpretation
+## Tablet / desktop
+The same interaction opens a right-side drawer.
 
-### Feedback mix
-Shows:
-- indicative praise vs improvement balance
-- strongest positive theme
-- strongest improvement theme
-- an accuracy note that the ring is a coded thematic balance, not a satisfaction percentage
+## UX principle
+Tap → detail comes to you → close → return to the same dashboard position.
 
-### Any Top Theme
-Each theme bar is tappable. The detail panel changes to show:
-- what the theme means in this table's analysis
-- how many captured resident voices mention it
-- how many broader post-event feedback items also point to it
-- which resident profiles contributed
-- a suggested next move
+The old inline below-the-fold detail panel has been removed, and no detail auto-opens when analysis first loads.
 
-The exact resident profiles captured still drive the dashboard. The same subset is deterministic; different subsets can change the theme ranking, drill-down evidence, headline and recommendation.
-
-## Backend
-- supports all 256 subsets of 8 resident profiles
-- analysis cache schema bumped to v7 so older cached dashboards are automatically regenerated
-- no external AI API required
+## Dynamic analysis
+The deterministic backend remains unchanged and still supports all 256 possible subsets of the 8 resident profiles. No external AI API is required.
 
 ## Netlify
 - Base directory: blank
