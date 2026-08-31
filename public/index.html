@@ -7,7 +7,7 @@
   <title>GroundSense AI</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
-<body>
+<body class="participant">
 <main class="shell">
   <header class="topbar">
     <div class="brand">Ground<span>Sense</span> AI</div>
@@ -15,15 +15,10 @@
   </header>
 
   <section id="joinView">
-    <div class="card hero tint">
-      <div class="eyebrow">AI × Grassroots · 10–15 minute simulation</div>
-      <h1>Know the ground.<br>Then let AI help.</h1>
-      <p class="lead">Your table has one mission: understand why residents may not be participating, then decide what to do next.</p>
-      <div class="mission">
-        <div class="mission-num">1</div><div><strong>Go to the ground</strong><p>Gather fragmented signals, one runner at a time.</p></div>
-        <div class="mission-num">2</div><div><strong>Connect AI</strong><p>See what changes when more information can be processed at once.</p></div>
-        <div class="mission-num">3</div><div><strong>Make the call</strong><p>Use human context and judgement to decide what actually happens.</p></div>
-      </div>
+    <div class="card hero tint simple-hero">
+      <div class="eyebrow">AI × Grassroots</div>
+      <h1>Family Day is over.<br>What did residents tell us?</h1>
+      <p class="lead">Gather 8 resident comments. Then use AI to make sense of more post-event feedback.</p>
     </div>
 
     <div class="card">
@@ -32,162 +27,144 @@
           <div>
             <label for="sessionCode">Session code</label>
             <input id="sessionCode" maxlength="10" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="e.g. AI27" required>
-            <p class="field-help">Use the code shown by your facilitator.</p>
           </div>
           <div>
-            <label for="teamNo">Your physical table</label>
+            <label for="teamNo">Your table</label>
             <select id="teamNo" required><option value="">Choose a table…</option></select>
-            <p class="field-help">The four-digit Ground Station codes come later.</p>
           </div>
         </div>
-        <div class="actions"><button class="btn large full" id="joinBtn" type="submit">Join workshop →</button></div>
+        <button class="btn large full join-action" id="joinBtn" type="submit">Join workshop →</button>
         <p id="joinError" class="field-help" role="alert"></p>
       </form>
     </div>
   </section>
 
   <section id="workshopView" class="hidden">
-    <div class="card flat hero compact">
+    <div class="card flat phase-nav">
       <div class="phase-header">
-        <div><div class="identity" id="identity">SESSION — · TABLE —</div><div class="phase-title" id="phaseTitle">Ground</div></div>
+        <div>
+          <div class="identity" id="identity">SESSION — · TABLE —</div>
+          <div class="phase-title" id="phaseTitle">Gather</div>
+        </div>
         <button id="changeSession" class="link-btn" type="button">Change</button>
       </div>
-      <div class="phase-strip" aria-label="Workshop progress">
-        <div class="phase-step" data-step="GROUND">1 · Ground</div>
+      <div class="phase-strip three-step" aria-label="Workshop progress">
+        <div class="phase-step" data-step="GROUND">1 · Gather</div>
         <div class="phase-step" data-step="AI">2 · AI</div>
-        <div class="phase-step" data-step="CONTEXT">3 · Context</div>
-        <div class="phase-step" data-step="DEBRIEF">4 · Debrief</div>
+        <div class="phase-step" data-step="DEBRIEF">3 · Debrief</div>
       </div>
     </div>
 
     <section id="phaseGround" class="phase-view">
-      <div class="card tint">
-        <div class="instruction">
-          <div class="instruction-icon">1×</div>
-          <div><div class="eyebrow">Round 1 · Human process</div><h2>Send one runner at a time.</h2><p class="lead">Visit one Ground Station, read or listen carefully, then come back and tell your table what you found. <strong>Swap runners each trip.</strong></p></div>
-        </div>
-        <div class="callout amber" style="margin-top:15px"><strong>Do not send all eight people at once.</strong> The effort of gathering fragmented information is part of the experience.</div>
+      <div class="card tint focus-card">
+        <div class="eyebrow">Round 1</div>
+        <h1 class="phase-hero-title">Hear 8 resident voices.</h1>
+        <p class="lead"><strong>8 people. 8 stations.</strong><br>Each person reads one resident’s Family Day feedback and brings back the 4-digit code.</p>
       </div>
 
       <div class="card">
         <div class="progress-row">
-          <div><div class="small strong muted">GROUND SIGNALS RETURNED</div><div class="big-count"><span id="foundCount">0</span><span class="muted" style="font-size:18px"> / 8</span></div></div>
-          <div style="flex:1;max-width:330px"><div class="progress"><span id="foundBar" style="width:0%"></span></div><p id="runnerCue" class="field-help">Send your first runner.</p></div>
+          <div>
+            <div class="section-label">Resident comments collected</div>
+            <div class="big-count"><span id="foundCount">0</span><span class="count-total"> / 8</span></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress"><span id="foundBar" style="width:0%"></span></div>
+            <p id="runnerCue" class="field-help">Go to 8 different stations.</p>
+          </div>
         </div>
+
         <form id="discoverForm" novalidate>
-          <label for="stationCode">Runner returned? Enter the station code</label>
+          <label for="stationCode">Enter a 4-digit station code</label>
           <input id="stationCode" class="code-input" inputmode="numeric" autocomplete="one-time-code" enterkeyhint="done" maxlength="4" placeholder="0000" aria-describedby="discoverMessage">
-          <div class="actions"><button id="discoverBtn" class="btn full" type="submit" disabled>Add this signal</button></div>
+          <button id="discoverBtn" class="btn full" type="submit" disabled>Add comment</button>
           <p id="discoverMessage" class="field-help" role="status"></p>
         </form>
-        <div id="signalsList" class="signal-list"></div>
-      </div>
 
-      <div class="card">
-        <div class="eyebrow">Before AI</div>
-        <h2>What is your table's read?</h2>
-        <p class="muted">Based only on what you managed to gather, what seems to be stopping participation?</p>
-        <textarea id="humanRead" maxlength="900" placeholder="We think the main issue is…"></textarea>
-        <div class="actions between"><button class="btn secondary" id="saveHumanRead" type="button">Save working hypothesis</button><span id="humanSaved" class="status-text"></span></div>
+        <div id="signalsList" class="signal-list compact-signals"></div>
       </div>
     </section>
 
     <section id="phaseAI" class="phase-view hidden">
-      <div class="card tint">
-        <div class="eyebrow">Round 2 · AI-supported synthesis</div>
-        <h1 style="font-size:36px">Connect the data.</h1>
-        <p class="lead">Now imagine your grassroots process is connected to digital channels. Information captured there can flow into an AI system for rapid synthesis.</p>
-        <div class="callout blue" style="margin-top:14px"><strong>Accuracy check:</strong> AI is not magically walking around collecting data. An AI-enabled workflow can receive, structure and analyse information captured through connected touchpoints.</div>
+      <div class="card tint focus-card">
+        <div class="eyebrow">Round 2</div>
+        <h1 class="phase-hero-title">Now add more feedback.</h1>
+        <p class="lead">AI combines your 8 resident comments with more Family Day feedback captured from online forms and other means.</p>
       </div>
 
       <div class="card">
-        <div class="pipeline" aria-label="Data pipeline">
-          <div class="pipe-node"><strong>5</strong><span>connected channels</span></div><div class="pipe-arrow">→</div>
-          <div class="pipe-node"><strong>27</strong><span>digital inputs</span></div><div class="pipe-arrow">→</div>
-          <div class="pipe-node"><strong>AI</strong><span>rapid synthesis</span></div>
+        <div class="stat-row two-stat" aria-label="Information being analysed">
+          <div class="stat-big"><strong>More</strong><span>post-event feedback</span></div>
+          <div class="stat-big"><strong id="groundStat">0</strong><span>resident comments</span></div>
         </div>
-        <div class="chips">
-          <span class="chip">Feedback forms</span><span class="chip">Attendance records</span><span class="chip">Volunteer sign-ups</span><span class="chip">Programme notes</span><span class="chip">Complaint logs</span>
-        </div>
-        <div class="divider"></div>
-        <p><strong>Your table also contributes <span id="groundStat">0</span> ground signal(s).</strong></p>
-        <button id="analyseBtn" class="btn large full" type="button">✨ Synthesise the evidence</button>
-        <p id="aiStatus" class="field-help" role="status"></p>
+        <p class="micro-note centred">Captured after Family Day from online forms and other means.</p>
+        <button id="analyseBtn" class="btn large full" type="button">✨ Analyse the feedback</button>
+        <p id="aiStatus" class="field-help centred" role="status"></p>
       </div>
 
       <div id="analysisResult" class="hidden">
-        <div class="card">
-          <div class="phase-header"><div><div class="eyebrow">AI output</div><h2>Synthesis</h2></div><span class="result-tag" id="aiModeBadge">Live AI</span></div>
-          <div class="ai-grid">
-            <div class="ai-box"><h3>🔎 Patterns</h3><ul id="patterns"></ul></div>
-            <div class="ai-box"><h3>💎 Community assets</h3><ul id="assets"></ul></div>
-            <div class="ai-box"><h3>⚠️ Watch-outs</h3><ul id="cautions"></ul></div>
-            <div class="ai-box"><h3>➡️ Possible next step</h3><p id="nextStep"></p></div>
+        <div class="card dashboard-card">
+          <div class="dashboard-head">
+            <div>
+              <div class="eyebrow">Feedback dashboard</div>
+              <h2>Family Day at a glance</h2>
+            </div>
+            <span class="result-tag" id="aiModeBadge">Workshop synthesis</span>
           </div>
-          <div class="callout amber" style="margin-top:12px"><strong>What AI cannot see:</strong> <span id="dataLimit"></span></div>
-          <p id="confidenceNote" class="field-help"></p>
-        </div>
-        <div class="card flat">
-          <div class="grid2">
-            <div class="ai-box"><h3>What did AI spot?</h3><p>Something your table did not notice, connect or prioritise?</p></div>
-            <div class="ai-box"><h3>What might still be missing?</h3><p>Something that may never have entered the data in the first place?</p></div>
+
+          <div class="dashboard-summary">
+            <div class="dash-metric coverage-metric">
+              <div class="dash-label">Resident voices</div>
+              <div class="dash-number"><span id="coverageCount">0</span><small>/8</small></div>
+              <div id="coverageLabel" class="dash-note">—</div>
+            </div>
+
+            <div class="dash-metric mix-metric">
+              <div class="dash-label">Feedback mix</div>
+              <div id="mixRing" class="mix-ring" style="--praise:50">
+                <div><strong id="mixValue">50%</strong><span>praise</span></div>
+              </div>
+              <div id="mixLabel" class="dash-note">Mixed feedback</div>
+            </div>
+          </div>
+
+          <div class="themes-panel">
+            <div class="dash-label">Top themes</div>
+            <div id="themeBars" class="theme-bars"></div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <section id="phaseContext" class="phase-view hidden">
-      <div class="card tint">
-        <div class="instruction">
-          <div class="instruction-icon">👣</div>
-          <div><div class="eyebrow">Round 3 · Human context</div><h2>Go back to the ground.</h2><p class="lead"><strong>Send one representative forward.</strong> There is one final Ground Update that the AI was deliberately not given.</p></div>
+        <div class="card synthesis-card">
+          <div class="eyebrow">AI synthesis</div>
+          <div id="insightHeadline" class="insight-headline"></div>
+          <div id="supportingPoints" class="supporting-points"></div>
         </div>
-        <div class="callout" style="margin-top:15px">When your representative returns, let them tell the table what they learned before you decide what to do.</div>
-      </div>
-
-      <div class="card">
-        <h2>Does the new context change your plan?</h2>
-        <div id="changeChoices" class="choice-row" role="group" aria-label="Did the plan change?">
-          <button class="choice" type="button" data-choice="yes">Yes</button>
-          <button class="choice" type="button" data-choice="no">No</button>
-          <button class="choice" type="button" data-choice="unsure">Not sure</button>
-        </div>
-        <label for="adaptation">What would your table do now — and why?</label>
-        <textarea id="adaptation" maxlength="1200" placeholder="Knowing this context, we would…"></textarea>
-        <button class="btn large full" id="submitDecision" type="button">Submit our final call</button>
-        <p id="decisionStatus" class="field-help" role="status"></p>
       </div>
     </section>
 
     <section id="phaseDebrief" class="phase-view hidden">
-      <div class="card tint">
+      <div class="card tint focus-card">
         <div class="eyebrow">Debrief</div>
-        <h1>Same community.<br>More context.<br>Better decision.</h1>
-        <p class="lead">AI can shorten the distance between information and action. It does not remove the need to know the people behind the information.</p>
+        <h1>Many comments.<br>One clearer picture.</h1>
+        <p class="lead">AI can help organisers spot patterns across post-event feedback quickly.</p>
       </div>
-      <div class="card" id="journeyCard">
-        <div class="eyebrow">Your table's journey</div>
-        <div class="journey">
-          <div class="journey-box"><h3>Before AI</h3><p id="journeyHuman" class="muted">No hypothesis saved.</p></div>
-          <div class="journey-arrow">→</div>
-          <div class="journey-box"><h3>After human context</h3><p id="journeyDecision" class="muted">No final decision submitted.</p></div>
+
+      <div class="card takeaway-card">
+        <div class="takeaway-grid one-focus">
+          <div>
+            <h3>🤖 AI can help you</h3>
+            <p>Bring feedback together<br>Spot repeated themes<br>Surface areas to improve</p>
+          </div>
         </div>
+        <div class="final-line">From scattered feedback<br>to useful insight.</div>
       </div>
-      <div class="card">
-        <div class="grid2">
-          <div class="ai-box"><h3>🤖 AI can help</h3><p>Receive information from connected channels.<br>Process volume.<br>Connect signals.<br>Spot patterns.<br>Surface options.</p></div>
-          <div class="ai-box"><h3>👣 GRLs still need to</h3><p>Listen on the ground.<br>Understand context.<br>Build relationships.<br>Exercise judgement.<br>Take responsibility.</p></div>
-        </div>
-        <div class="divider"></div>
-        <h2>Let AI process the information.<br>Let people know the people.</h2>
-        <p class="muted">AI is only as grounded as the context and data available to it.</p>
-      </div>
-      <button id="leaveWorkshop" class="btn secondary full" type="button">Leave this workshop</button>
+
+      <button id="leaveWorkshop" class="btn secondary full" type="button">Leave workshop</button>
     </section>
   </section>
 
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
-  <footer>Fictional resident data for training. Use real resident information only under approved organisational privacy and data-handling arrangements.</footer>
+  <footer>Fictional resident data for training.</footer>
 </main>
 <script src="/app.js" type="module"></script>
 </body>

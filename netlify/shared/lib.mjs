@@ -63,10 +63,3 @@ export function assertPin(session, supplied){
   }
 }
 
-export function aiKey(){
-  return Netlify.env.get("OPENAI_API_KEY") || Netlify.env.get("OPEN_AI_KEY") || "";
-}
-
-export function aiModel(){
-  return Netlify.env.get("OPENAI_MODEL") || "gpt-5.6-luna";
-}

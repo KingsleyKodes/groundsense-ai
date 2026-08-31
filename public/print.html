@@ -1,23 +1,58 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GroundSense AI · Print Pack</title>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GroundSense AI · Print Pack</title>
 <style>
-*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;color:#17211b;background:#eee}main{max-width:900px;margin:auto;padding:18px}.toolbar{background:#fff;padding:14px;border-radius:12px;margin-bottom:18px}.toolbar button{padding:10px 14px;font-weight:bold}.sheet{background:#fff;border:3px solid #17211b;border-radius:18px;padding:28px;margin:0 0 22px;min-height:420px;display:flex;flex-direction:column;justify-content:space-between;page-break-after:always}.cover{justify-content:flex-start}.brand{font-size:18px;font-weight:bold;color:#246b4a}.kicker{font-size:13px;font-weight:bold;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}.title{font-size:34px;font-weight:900;line-height:1.05;margin:10px 0}.role{font-size:28px;font-weight:900;margin-top:14px}.quote{font-size:34px;line-height:1.18;font-weight:800;margin:28px 0}.instruction{font-size:17px;line-height:1.5}.code{font-size:16px;border-top:2px solid #ddd;padding-top:18px}.code strong{font-size:54px;letter-spacing:.14em;display:block;margin-top:7px}.note{background:#f1f5f2;border-radius:10px;padding:12px;font-weight:bold}.final{border-style:dashed}.final .quote{font-size:29px}.steps{font-size:18px;line-height:1.7}.steps strong{color:#246b4a}@media print{body{background:#fff}main{max-width:none;padding:0}.toolbar{display:none}.sheet{border-radius:0;margin:0;padding:18mm;min-height:250mm}}
-</style></head>
-<body><main><div class="toolbar"><button onclick="window.print()">Print pack</button> <span>For 80–100 pax, print two copies of Ground Stations 1–8.</span></div><div id="sheets"></div></main>
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;color:#17211b;background:#eee}
+main{max-width:900px;margin:auto;padding:18px}.toolbar{background:#fff;padding:14px;border-radius:12px;margin-bottom:18px}
+.toolbar button{padding:10px 14px;font-weight:bold}.sheet{background:#fff;border:3px solid #17211b;border-radius:18px;padding:28px;margin:0 0 22px;min-height:420px;display:flex;flex-direction:column;justify-content:space-between;page-break-after:always}
+.cover{justify-content:flex-start}.brand{font-size:18px;font-weight:bold;color:#246b4a}.kicker{font-size:14px;font-weight:bold;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.title{font-size:38px;font-weight:900;line-height:1.05;margin:10px 0}.role{font-size:34px;font-weight:900;margin-top:14px}
+.quote{font-size:40px;line-height:1.18;font-weight:800;margin:28px 0}.instruction{font-size:21px;line-height:1.5}
+.code{font-size:20px;border-top:2px solid #ddd;padding-top:18px}.code strong{font-size:58px;letter-spacing:.14em;display:block;margin-top:7px}
+.note{background:#f1f5f2;border-radius:10px;padding:12px;font-weight:bold;font-size:19px}.steps{font-size:20px;line-height:1.65}.steps strong{color:#246b4a}
+@media print{body{background:#fff}main{max-width:none;padding:0}.toolbar{display:none}.sheet{border-radius:0;margin:0;padding:18mm;min-height:250mm}}
+</style>
+</head>
+<body>
+<main>
+<div class="toolbar"><button onclick="window.print()">Print pack</button> <span>For larger rooms, print extra copies of Stations 1–8.</span></div>
+<div id="sheets"></div>
+</main>
 <script>
 const stations=[
-["01","Older resident","“Activities are always on Saturday. That is when I visit my grandchildren.”","3814"],
-["02","First-time participant","“I came once. Everyone already seemed to know each other, so I left quite early.”","5729"],
-["03","Youth resident","“The activities are not really for people my age. I usually just play basketball downstairs.”","1468"],
-["04","Parent","“I would come more often if there was something my children could take part in too.”","9035"],
-["05","Potential volunteer","“I do not mind helping. I have just never really been asked directly.”","6241"],
-["06","Resident with a skill","“I can teach simple home cooking if people are interested. I would not mind helping with a small group.”","7153"],
-["07","Coffee shop operator","“People from this block come by every day, but most sit with the same few people and then go home.”","4386"],
-["08","Nearby resident","“Evening activities downstairs can get noisy. Some of us need the area to quieten down earlier.”","2897"]
+["01","Senior resident","“I enjoyed the performances and the park was nice and breezy. But the registration queue was long and there was nowhere to sit while waiting.”","3814"],
+["02","Parent with a preschooler","“My daughter loved the craft corner. I would have stayed longer if there were more toddler-friendly activities and a clearer place to park our stroller.”","5729"],
+["03","Parent with school-age children","“The children really enjoyed the games at the park. The food coupon queue around lunchtime was the main frustration for us.”","1468"],
+["04","Teen resident","“The sports challenge at the park was fun. Most of the other activities felt more suited to younger children and parents, so my friends left quite early.”","9035"],
+["05","New resident","“It was a good way to discover the Community Club and meet people. I was confused about which activities were inside the CC and which were at the park, so I missed one station.”","6241"],
+["06","Resident with mobility needs","“The volunteers were very helpful and the CC was easy to enter. Some activities at the park were harder for me to reach because the route crossed uneven ground.”","7153"],
+["07","Resident volunteer","“I enjoyed helping and would volunteer again. The briefing could have been clearer because I only found out my role and break time shortly before the event started.”","4386"],
+["08","Park regular","“The atmosphere was lively and it was nice to see families using the park. After lunch, the bins near the park exit filled up and part of the path became crowded.”","2897"]
 ];
 const sheets=document.getElementById("sheets");
-sheets.innerHTML=`<section class="sheet cover"><div class="brand">GroundSense AI</div><div class="kicker" style="margin-top:28px">Facilitator setup</div><div class="title">Physical Ground Station Pack</div><p class="instruction">Place Stations 1–8 around the room. Participants should visit <strong>one person at a time per table</strong>, return, and enter the four-digit code on their shared device. Keep the Final Ground Update covered until Round 3.</p><div class="note">For 80–100 participants, use two copies of each station to reduce queues.</div><div class="steps"><p><strong>Ground · 3 min</strong> — runners gather signals.</p><p><strong>AI · 3 min</strong> — tables synthesise connected digital inputs.</p><p><strong>Context · 2 min</strong> — one representative comes forward.</p><p><strong>Debrief · 2–4 min</strong> — AI processing + human judgement.</p></div></section>`+
-stations.map(s=>`<section class="sheet"><div><div class="kicker">GROUND STATION ${s[0]}</div><div class="role">${s[1]}</div><div class="quote">${s[2]}</div><div class="note">Read carefully. Return to your table and explain what you learned.</div></div><div class="code">Enter this code on your table device:<strong>${s[3]}</strong></div></section>`).join("")+
-`<section class="sheet final"><div><div class="kicker">FINAL GROUND UPDATE · HUMAN CONTEXT</div><div class="note">KEEP COVERED UNTIL THE FACILITATOR OPENS ROUND 3.</div><div class="quote">The resident who offered to teach cooking recently lost her husband. She said she misses having people around and wants something meaningful to contribute. She is not simply an available programme resource; she may also be looking for connection and purpose.</div></div><div class="code">Return to your table and tell them what you learned. Do not enter anything into the AI.</div></section>`;
-</script></body></html>
+sheets.innerHTML=`<section class="sheet cover">
+  <div class="brand">GroundSense AI</div>
+  <div class="kicker" style="margin-top:28px">Facilitator setup</div>
+  <div class="title">Family Day Resident Feedback</div>
+  <p class="instruction"><strong>Family Day has just ended.</strong> All 8 participants move at the same time. Each person reads one resident’s feedback, remembers the 4-digit code, and returns to the table.</p>
+  <div class="note">8 people · 8 resident profiles · go together.</div>
+  <div class="steps">
+    <p><strong>Gather · ~2 min</strong> — everyone reads one resident’s Family Day feedback.</p>
+    <p><strong>AI · ~3 min</strong> — combine the 8 resident comments with more post-event feedback captured from online forms and other means.</p>
+    <p><strong>Debrief · ~3 min</strong> — identify what worked and what organisers could improve next time.</p>
+  </div>
+</section>`+
+stations.map(s=>`<section class="sheet">
+  <div>
+    <div class="kicker">RESIDENT PROFILE ${s[0]}</div>
+    <div class="role">${s[1]}</div>
+    <div class="quote">${s[2]}</div>
+    <div class="note">Read the feedback. Remember the code. Return to your table.</div>
+  </div>
+  <div class="code">4-digit code:<strong>${s[3]}</strong></div>
+</section>`).join("");
+</script>
+</body>
+</html>
