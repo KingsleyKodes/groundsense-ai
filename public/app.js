@@ -280,7 +280,24 @@ function renderAnalysis(analysis){
   $("#analysisResult").classList.remove("hidden");
   $("#analyseBtn").textContent="Dashboard ready ✓";
 
-  closeDashboardDetail({restoreFocus:false});
+  // Preserve any drill-down the participant is currently reading.
+  // Background polling can re-render this dashboard every few seconds,
+  // but it must not dismiss the sheet/drawer.
+  const detailWasOpen=$("#detailOverlay").classList.contains("open");
+  const activeDetail=state.activeDetail;
+
+  if(detailWasOpen&&activeDetail==="voices"){
+    showDashboardDetail("voices");
+  }else if(detailWasOpen&&activeDetail==="mix"){
+    showDashboardDetail("mix");
+  }else if(detailWasOpen&&activeDetail&&out.interactive?.themes?.[activeDetail]){
+    showDashboardDetail("theme",activeDetail);
+  }else if(detailWasOpen){
+    closeDashboardDetail({restoreFocus:false});
+  }else{
+    state.activeDetail=null;
+    setActiveTrigger("__none__");
+  }
 }
 
 async function refresh(){
