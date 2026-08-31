@@ -106,38 +106,75 @@
         <div class="card dashboard-card">
           <div class="dashboard-head">
             <div>
-              <div class="eyebrow">Feedback dashboard</div>
+              <div class="eyebrow">Interactive feedback dashboard</div>
               <h2>Family Day at a glance</h2>
+              <p class="dashboard-hint">Tap any dashboard item to explore.</p>
             </div>
             <span class="result-tag" id="aiModeBadge">Workshop synthesis</span>
           </div>
 
           <div class="dashboard-summary">
-            <div class="dash-metric coverage-metric">
+            <button class="dash-metric coverage-metric dashboard-trigger" id="coverageTrigger" type="button" data-detail="voices" aria-label="Explore resident voices">
               <div class="dash-label">Resident voices</div>
               <div class="dash-number"><span id="coverageCount">0</span><small>/8</small></div>
               <div id="coverageLabel" class="dash-note">—</div>
-            </div>
+              <div class="tap-cue">Tap to explore →</div>
+            </button>
 
-            <div class="dash-metric mix-metric">
+            <button class="dash-metric mix-metric dashboard-trigger" id="mixTrigger" type="button" data-detail="mix" aria-label="Explore feedback mix">
               <div class="dash-label">Feedback mix</div>
               <div id="mixRing" class="mix-ring" style="--praise:50">
                 <div><strong id="mixValue">50%</strong><span>praise</span></div>
               </div>
               <div id="mixLabel" class="dash-note">Mixed feedback</div>
-            </div>
+              <div class="tap-cue">Tap to explore →</div>
+            </button>
           </div>
 
           <div class="themes-panel">
             <div class="dash-label">Top themes</div>
             <div id="themeBars" class="theme-bars"></div>
           </div>
+
+          <div class="coverage-note" id="coverageNote"></div>
+
+          <div class="dashboard-detail" id="dashboardDetail" aria-live="polite">
+            <div class="detail-topline">
+              <div>
+                <div class="dash-label" id="detailEyebrow">Explore the dashboard</div>
+                <h3 id="detailTitle">Tap a theme to see more</h3>
+              </div>
+              <span class="detail-badge" id="detailBadge">Interactive</span>
+            </div>
+            <p class="detail-summary" id="detailSummary">Select Resident voices, Feedback mix, or any theme bar above.</p>
+            <div id="detailBody" class="detail-body"></div>
+          </div>
         </div>
 
         <div class="card synthesis-card">
           <div class="eyebrow">AI synthesis</div>
           <div id="insightHeadline" class="insight-headline"></div>
-          <div id="supportingPoints" class="supporting-points"></div>
+
+          <div class="insight-grid">
+            <div class="insight-box positive-box">
+              <div class="insight-box-label">✓ What worked</div>
+              <p id="whatWorked"></p>
+            </div>
+            <div class="insight-box attention-box">
+              <div class="insight-box-label">! Needs attention</div>
+              <p id="needsAttention"></p>
+            </div>
+          </div>
+
+          <div class="next-step-box">
+            <div class="insight-box-label">→ Next time</div>
+            <p id="recommendedAction"></p>
+          </div>
+
+          <details class="support-details">
+            <summary>Why did AI reach this view?</summary>
+            <div id="supportingPoints" class="supporting-points"></div>
+          </details>
         </div>
       </div>
     </section>

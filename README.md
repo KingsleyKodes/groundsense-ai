@@ -1,39 +1,36 @@
-# GroundSense AI v2.5 — Dynamic Family Day Dashboard
+# GroundSense AI v2.7 — Interactive Dynamic Dashboard
 
-This build adds a visual post-event feedback dashboard and a deterministic backend synthesis engine.
+The Family Day dashboard is now interactive while remaining large-text and workshop-friendly.
 
-## Dynamic analysis
+## What participants can tap
 
-The analysis is based on the **exact resident profiles that each table collected**.
+### Resident voices
+Shows:
+- which resident archetypes the table captured
+- which resident voices are missing
+- a short coverage interpretation
 
-There are 8 resident profiles, so the backend can safely handle all **256 possible subsets**:
-- 0/8
-- every possible 1/8 combination
-- every possible 2/8 combination
-- ...
-- 8/8
+### Feedback mix
+Shows:
+- indicative praise vs improvement balance
+- strongest positive theme
+- strongest improvement theme
+- an accuracy note that the ring is a coded thematic balance, not a satisfaction percentage
 
-The broader fictional post-event feedback remains a stable baseline, while resident profiles are weighted more heavily. This means two tables with the same number of resident comments can still see different emphasis if they captured different resident archetypes.
+### Any Top Theme
+Each theme bar is tappable. The detail panel changes to show:
+- what the theme means in this table's analysis
+- how many captured resident voices mention it
+- how many broader post-event feedback items also point to it
+- which resident profiles contributed
+- a suggested next move
 
-## Dashboard
+The exact resident profiles captured still drive the dashboard. The same subset is deterministic; different subsets can change the theme ranking, drill-down evidence, headline and recommendation.
 
-The participant dashboard shows:
-- Resident voices captured: X/8
-- Feedback mix: praise vs improvement points
-- Top 4 themes as visual bars
-- One big AI finding
-- Two short supporting points
-
-Possible themes include activities, atmosphere, community connection, queues, wayfinding, accessibility, age-group fit, volunteer experience, comfort and outdoor operations.
-
-## Workshop mode
-
-This remains a deterministic simulation:
-- no API credits required
-- no external AI call
-- no unpredictable output
-- same exact subset always gives the same result
-- reset starts a fresh table analysis
+## Backend
+- supports all 256 subsets of 8 resident profiles
+- analysis cache schema bumped to v7 so older cached dashboards are automatically regenerated
+- no external AI API required
 
 ## Netlify
 - Base directory: blank

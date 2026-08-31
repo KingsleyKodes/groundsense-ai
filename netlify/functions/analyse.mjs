@@ -17,12 +17,13 @@ export default async function(req){
     }
 
     const existing=await readJson(`analysis/${sessionCode}/${team}`);
-    if(existing)return json(existing);
+    if(existing?.schemaVersion===7)return json(existing);
 
     const ground=await listDiscoveries(sessionCode,team);
     const dashboard=buildDashboard(ground.map(item=>item.id));
 
     const payload={
+      schemaVersion:7,
       mode:"workshop-simulation",
       result:dashboard,
       residentCount:ground.length,

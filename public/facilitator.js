@@ -14,7 +14,7 @@ const cues={
     title:"Now add more feedback.",
     say:"“Now combine those 8 resident comments with more Family Day feedback captured from online forms and other means.”",
     do:"Ask tables to tap Analyse the feedback and look at their dashboard.",
-    watch:"Notice that different tables may see different themes depending on which resident profiles they captured."
+    watch:"Ask tables to tap different parts of the dashboard. Resident voices, feedback mix and each top theme reveal a different layer of the analysis."
   },
   DEBRIEF:{
     title:"Many comments. One clearer picture.",

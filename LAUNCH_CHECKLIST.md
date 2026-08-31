@@ -1,13 +1,14 @@
-# GroundSense AI v2.5 — Launch Checklist
+# GroundSense AI v2.7 — Launch Checklist
 
-- [ ] Family Day scenario remains clear.
-- [ ] 8 resident profiles remain clear and plausible.
-- [ ] Dashboard shows resident voices captured.
-- [ ] Dashboard shows a feedback mix ring.
-- [ ] Dashboard shows 4 theme bars.
-- [ ] Synthesis remains 1 big finding + 2 supporting points.
-- [ ] Different resident-profile combinations can change the dashboard.
-- [ ] Same resident-profile combination always returns the same dashboard.
-- [ ] All 256 possible profile subsets pass backend generation tests.
+- [ ] Resident voices card is tappable.
+- [ ] Feedback mix card is tappable.
+- [ ] All four theme bars are tappable.
+- [ ] Selected dashboard item is visually highlighted.
+- [ ] Detail panel changes when each item is selected.
+- [ ] Resident detail shows captured and missing profiles.
+- [ ] Mix detail explains that the percentage is a coded balance, not a satisfaction score.
+- [ ] Theme detail shows resident evidence, broader feedback evidence and a next move.
+- [ ] Large-text readability is preserved.
+- [ ] All 256 possible resident-profile subsets pass backend tests.
+- [ ] Older cached analysis results are regenerated under schema v7.
 - [ ] No external AI API is required.
-- [ ] Netlify still deploys 4 functions.

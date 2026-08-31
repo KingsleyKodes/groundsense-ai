@@ -4,7 +4,7 @@ const PHASES = ["GROUND","AI","DEBRIEF"];
 const phaseNames = {GROUND:"Gather",AI:"AI",DEBRIEF:"Debrief"};
 
 const state = {
-  session:"", team:"", phase:"GROUND", discoveries:[], analysis:null,
+  session:"", team:"", phase:"GROUND", discoveries:[], analysis:null, activeDetail:null,
   runVersion:1, pollTimer:null, pollBusy:false, joined:false, initialPhaseSeen:false
 };
 
@@ -73,6 +73,16 @@ function clearWorkshopUi(){
   $("#themeBars").innerHTML="";
   $("#coverageCount").textContent="0";
   $("#coverageLabel").textContent="—";
+  $("#coverageNote").textContent="";
+  $("#whatWorked").textContent="";
+  $("#needsAttention").textContent="";
+  $("#recommendedAction").textContent="";
+  state.activeDetail=null;
+  $("#detailEyebrow").textContent="Explore the dashboard";
+  $("#detailTitle").textContent="Tap a theme to see more";
+  $("#detailBadge").textContent="Interactive";
+  $("#detailSummary").textContent="Select Resident voices, Feedback mix, or any theme bar above.";
+  $("#detailBody").innerHTML="";
   $("#mixValue").textContent="50%";
   $("#mixLabel").textContent="Mixed feedback";
   $("#mixRing").style.setProperty("--praise","50");
@@ -135,6 +145,68 @@ function renderDiscoveries(){
   `).join("");
 }
 
+
+function chips(items=[],kind="captured"){
+  if(!items.length)return '<span class="empty-chip">None</span>';
+  return items.map(item=>`<span class="detail-chip ${kind}">${escapeHtml(item)}</span>`).join("");
+}
+
+function setActiveTrigger(key){
+  document.querySelectorAll(".dashboard-trigger,.interactive-theme").forEach(el=>{
+    el.classList.toggle("selected",el.dataset.detail===key||el.dataset.theme===key);
+  });
+}
+
+function showDashboardDetail(kind,key=null){
+  const out=state.analysis?.result;
+  if(!out)return;
+  const interactive=out.interactive||{};
+
+  if(kind==="voices"){
+    const data=interactive.voices||{captured:state.discoveries.map(x=>x.source),missing:[],note:out.coverageNote||""};
+    $("#detailEyebrow").textContent="Resident voices";
+    $("#detailTitle").textContent=`${data.captured?.length||0} of 8 profiles captured`;
+    $("#detailBadge").textContent=out.coverage?.label||"Coverage";
+    $("#detailSummary").textContent=data.note||out.coverageNote||"";
+    $("#detailBody").innerHTML=`
+      <div class="detail-section"><strong>Captured</strong><div class="detail-chips">${chips(data.captured||[],"captured")}</div></div>
+      <div class="detail-section"><strong>Missing voices</strong><div class="detail-chips">${chips(data.missing||[],"missing")}</div></div>`;
+    state.activeDetail="voices";setActiveTrigger("voices");return;
+  }
+
+  if(kind==="mix"){
+    const data=interactive.mix||{};
+    const praise=Number(data.positive??out.feedbackMix?.positive??50);
+    const improve=Number(data.improvement??(100-praise));
+    $("#detailEyebrow").textContent="Feedback mix";
+    $("#detailTitle").textContent=`${praise}% praise · ${improve}% improvement`;
+    $("#detailBadge").textContent=data.label||out.feedbackMix?.label||"Mixed";
+    $("#detailSummary").textContent=data.note||"This is an indicative coded balance across feedback themes, not a satisfaction percentage.";
+    $("#detailBody").innerHTML=`
+      <div class="detail-two-col">
+        <div><span class="mini-label">Strongest positive</span><strong>${escapeHtml(data.strongestPositive||out.topPositive?.label||"—")}</strong></div>
+        <div><span class="mini-label">Strongest improvement</span><strong>${escapeHtml(data.strongestImprovement||out.topFriction?.label||"—")}</strong></div>
+      </div>`;
+    state.activeDetail="mix";setActiveTrigger("mix");return;
+  }
+
+  if(kind==="theme"&&key){
+    const data=interactive.themes?.[key]||(out.topThemes||[]).find(t=>t.key===key);
+    if(!data)return;
+    const residentCount=(data.residentSources||[]).length;
+    $("#detailEyebrow").textContent="Theme deep dive";
+    $("#detailTitle").textContent=data.label||"Theme";
+    $("#detailBadge").textContent=data.emphasis==="positive"?"Strength":data.emphasis==="improve"?"Needs attention":"Mixed";
+    $("#detailSummary").textContent=data.interpretation||"This theme appears across the captured feedback.";
+    $("#detailBody").innerHTML=`
+      <div class="evidence-line"><span class="evidence-number">${residentCount}</span><span>captured resident ${residentCount===1?"voice":"voices"} mention this theme</span></div>
+      <div class="evidence-line"><span class="evidence-number">${Number(data.broaderCount)||0}</span><span>additional post-event feedback items also point here</span></div>
+      ${(data.residentSources||[]).length?`<div class="detail-section"><strong>Resident profiles</strong><div class="detail-chips">${chips(data.residentSources,"captured")}</div></div>`:""}
+      <div class="detail-action"><span>Next move</span><p>${escapeHtml(data.action||"Use this theme to guide the next improvement.")}</p></div>`;
+    state.activeDetail=key;setActiveTrigger(key);
+  }
+}
+
 function renderAnalysis(analysis){
   if(!analysis?.result){
     state.analysis=null;
@@ -155,13 +227,17 @@ function renderAnalysis(analysis){
   $("#mixRing").style.setProperty("--praise",String(praise));
 
   $("#themeBars").innerHTML=(out.topThemes||[]).slice(0,4).map(theme=>`
-    <div class="theme-row">
-      <div class="theme-name">${escapeHtml(theme.label)}</div>
+    <button class="theme-row interactive-theme" type="button" data-theme="${escapeHtml(theme.key)}" aria-label="Explore ${escapeHtml(theme.label)}">
+      <div class="theme-name">${escapeHtml(theme.label)} <span class="theme-arrow">›</span></div>
       <div class="theme-track"><span style="width:${Math.max(0,Math.min(100,Number(theme.percent)||0))}%"></span></div>
-    </div>
+    </button>
   `).join("");
 
   $("#insightHeadline").textContent=out.headline || "Family Day feedback shows a mix of strengths and improvement areas.";
+  $("#coverageNote").textContent=out.coverageNote || "";
+  $("#whatWorked").textContent=out.whatWorked || "Residents identified clear strengths worth keeping.";
+  $("#needsAttention").textContent=out.needsAttention || "The feedback points to an area that can be improved.";
+  $("#recommendedAction").textContent=out.recommendedAction || "Keep what worked and address the strongest repeated friction point.";
   $("#supportingPoints").innerHTML=(out.supporting||[]).slice(0,2).map((point,i)=>`
     <div class="support-point"><span>${i+1}</span><p>${escapeHtml(point)}</p></div>
   `).join("");
@@ -169,6 +245,12 @@ function renderAnalysis(analysis){
   $("#aiModeBadge").textContent="Workshop synthesis";
   $("#analysisResult").classList.remove("hidden");
   $("#analyseBtn").textContent="Dashboard ready ✓";
+
+  const firstTheme=(out.topThemes||[])[0]?.key;
+  if(state.activeDetail==="voices")showDashboardDetail("voices");
+  else if(state.activeDetail==="mix")showDashboardDetail("mix");
+  else if(state.activeDetail&&out.interactive?.themes?.[state.activeDetail])showDashboardDetail("theme",state.activeDetail);
+  else if(firstTheme)showDashboardDetail("theme",firstTheme);
 }
 
 async function refresh(){
@@ -273,6 +355,14 @@ $("#analyseBtn").addEventListener("click",async()=>{
     clearInterval(interval);
     button.disabled=false;
   }
+});
+
+
+$("#coverageTrigger").addEventListener("click",()=>showDashboardDetail("voices"));
+$("#mixTrigger").addEventListener("click",()=>showDashboardDetail("mix"));
+$("#themeBars").addEventListener("click",event=>{
+  const button=event.target.closest(".interactive-theme");
+  if(button)showDashboardDetail("theme",button.dataset.theme);
 });
 
 document.addEventListener("visibilitychange",()=>{if(state.joined&&!state.pollBusy){stopPolling();refresh();}});
