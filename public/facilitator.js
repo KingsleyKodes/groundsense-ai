@@ -5,14 +5,14 @@ const names={GROUND:"Gather",AI:"AI",DEBRIEF:"Debrief"};
 const suggested={GROUND:120,AI:180,DEBRIEF:180};
 const cues={
   GROUND:{
-    title:"Hear 8 resident voices.",
-    say:"“Family Day is over. Each person will read one resident’s feedback, then bring the code back to your table.”",
-    do:"Start all 8 people together. Each visits a different resident profile. When they return, the table enters all 8 codes.",
-    watch:"Make sure each table covers 8 different resident profiles."
+    title:"Resident Voices.",
+    say:"“Family Day is over. Each person will read one resident’s feedback, then bring the number representing that resident voice back to the table.”",
+    do:"Start everyone together. Each person visits a different resident profile. When they return, the table enters the numbers representing the resident voices.",
+    watch:"Make sure each table gathers a good spread of resident voices."
   },
   AI:{
-    title:"Now add more feedback.",
-    say:"“Now combine those 8 resident comments with more Family Day feedback captured from online forms and other means.”",
+    title:"AI combines resident voices with more Family Day feedback.",
+    say:"“Now combine the resident voices you gathered with more Family Day feedback captured from online forms and other means.”",
     do:"Ask tables to tap Analyse the feedback and look at their dashboard.",
     watch:"Ask tables to tap Resident voices, Feedback mix and a Top theme. On phones the detail slides up from the bottom; on larger screens it opens from the right."
   },

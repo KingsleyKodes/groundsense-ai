@@ -140,7 +140,7 @@ function renderDiscoveries(){
   $("#foundCount").textContent=count;
   $("#groundStat").textContent=count;
   $("#foundBar").style.width=`${Math.min(100,count/8*100)}%`;
-  $("#runnerCue").textContent=count===0?"Visit 8 different resident profiles.":count>=8?"All 8 collected ✓":`${8-count} more to enter.`;
+  $("#runnerCue").textContent=count===0?"Start collecting resident voices.":count>=8?"All resident voices collected ✓":"More resident voices are coming in.";
   $("#signalsList").innerHTML=state.discoveries.map(signal=>`
     <span class="signal-chip">✓ ${escapeHtml(signal.source)}</span>
   `).join("");
@@ -199,12 +199,12 @@ function showDashboardDetail(kind,key=null){
   if(kind==="voices"){
     const data=interactive.voices||{captured:state.discoveries.map(x=>x.source),missing:[],note:out.coverageNote||""};
     $("#detailEyebrow").textContent="Resident voices";
-    $("#detailTitle").textContent=`${data.captured?.length||0} of 8 profiles captured`;
+    $("#detailTitle").textContent=`${data.captured?.length||0} resident voices collected`;
     $("#detailBadge").textContent=out.coverage?.label||"Coverage";
     $("#detailSummary").textContent=data.note||out.coverageNote||"";
     $("#detailBody").innerHTML=`
-      <div class="detail-section"><strong>Captured</strong><div class="detail-chips">${chips(data.captured||[],"captured")}</div></div>
-      <div class="detail-section"><strong>Missing voices</strong><div class="detail-chips">${chips(data.missing||[],"missing")}</div></div>`;
+      <div class="detail-section"><strong>Voices collected</strong><div class="detail-chips">${chips(data.captured||[],"captured")}</div></div>
+      <div class="detail-section"><strong>Other resident voices</strong><div class="detail-chips">${chips(data.missing||[],"missing")}</div></div>`;
     state.activeDetail="voices";setActiveTrigger("voices");finishDashboardDetail();return;
   }
 
@@ -253,17 +253,16 @@ function renderAnalysis(analysis){
   const out=analysis.result;
 
   $("#coverageCount").textContent=out.coverage?.captured ?? 0;
-  $("#coverageLabel").textContent=out.coverage?.label || "—";
+  $("#coverageLabel").textContent=out.coverage?.label || "No resident voices yet";
 
   const praise=Number(out.feedbackMix?.positive ?? 50);
   $("#mixValue").textContent=`${praise}%`;
   $("#mixLabel").textContent=out.feedbackMix?.label || "Mixed feedback";
   $("#mixRing").style.setProperty("--praise",String(praise));
 
-  $("#themeBars").innerHTML=(out.topThemes||[]).slice(0,4).map(theme=>`
-    <button class="theme-row interactive-theme" type="button" data-theme="${escapeHtml(theme.key)}" aria-label="Explore ${escapeHtml(theme.label)}">
-      <div class="theme-name">${escapeHtml(theme.label)} <span class="theme-arrow">›</span></div>
-      <div class="theme-track"><span style="width:${Math.max(0,Math.min(100,Number(theme.percent)||0))}%"></span></div>
+  $("#themeBars").innerHTML=(out.topThemes||[]).slice(0,3).map(theme=>`
+    <button class="theme-chip interactive-theme ${escapeHtml(theme.emphasis||"mixed")}" type="button" data-theme="${escapeHtml(theme.key)}" aria-label="Explore ${escapeHtml(theme.label)}">
+      <span>${escapeHtml(theme.label)}</span><span class="theme-arrow">›</span>
     </button>
   `).join("");
 
@@ -367,14 +366,14 @@ $("#discoverForm").addEventListener("submit",async event=>{
   try{
     const data=await api("/api/discover",{method:"POST",body:JSON.stringify({session:state.session,team:state.team,stationCode})});
     $("#stationCode").value="";
-    $("#discoverMessage").textContent=data.already?"Already collected.":"Comment added ✓";
-    toast(data.already?"Already collected.":"Comment added ✓");
+    $("#discoverMessage").textContent=data.already?"Already collected.":"Voice added ✓";
+    toast(data.already?"Already collected.":"Voice added ✓");
     await refresh();
   }catch(error){
     $("#discoverMessage").textContent=error.message;
     toast(error.message,"error");
   }finally{
-    button.textContent="Add comment";
+    button.textContent="Add voice";
     button.disabled=$("#stationCode").value.length!==4;
   }
 });
@@ -383,7 +382,7 @@ $("#analyseBtn").addEventListener("click",async()=>{
   if(state.analysis){renderAnalysis(state.analysis);return;}
   const button=$("#analyseBtn"),status=$("#aiStatus");
   button.disabled=true;
-  const steps=["Bringing Family Day feedback together","Finding patterns","Building synthesis"];
+  const steps=["Bringing resident voices together","Finding patterns","Building synthesis"];
   let step=0;
   const show=()=>{status.innerHTML=`<span class="loading">${steps[step]} <i></i><i></i><i></i></span>`;};
   show();

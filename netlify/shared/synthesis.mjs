@@ -110,11 +110,11 @@ function actionDetail(key){
 }
 
 function coverageNote(count){
-  if(count===8)return "All 8 resident profiles were captured, giving this table the fullest ground picture.";
-  if(count>=6)return `${count}/8 resident profiles were captured. The picture is strong, but a few voices are still missing.`;
-  if(count>=3)return `${count}/8 resident profiles were captured. The dashboard is useful, but missing voices can change the emphasis.`;
-  if(count>0)return `Only ${count}/8 resident profiles were captured. Treat the dashboard as an early read rather than the full picture.`;
-  return "No resident profiles were captured. This dashboard is based only on the broader post-event feedback.";
+  if(count===8)return "A full set of resident voices was captured, giving this table the fullest ground picture.";
+  if(count>=6)return `A strong spread of resident voices was captured. The picture is strong, but a few voices are still missing.`;
+  if(count>=3)return `A partial spread of resident voices was captured. The dashboard is useful, but missing voices can still change the emphasis.`;
+  if(count>0)return `Only a few resident voices were captured. Treat the dashboard as an early read rather than the full picture.`;
+  return "No resident voices were captured. This dashboard is based only on the broader post-event feedback.";
 }
 
 
@@ -195,7 +195,7 @@ export function buildDashboard(discoveredIds=[]){
 
   const count=captured.length;
   const coveragePercent=Math.round((count/8)*100);
-  const coverageLabel=count===8?"Full resident set":count>=6?"Strong coverage":count>=3?"Partial coverage":count>0?"Limited coverage":"No resident profiles";
+  const coverageLabel=count===8?"Full picture":count>=6?"Strong coverage":count>=3?"Partial coverage":count>0?"Early read":"No resident voices yet";
 
   return{
     variationKey:captured.map(x=>x.id).sort().join("+")||"NONE",

@@ -18,7 +18,7 @@
     <div class="card hero tint simple-hero">
       <div class="eyebrow">AI × Grassroots</div>
       <h1>Family Day is over.<br>What did residents tell us?</h1>
-      <p class="lead">Gather 8 resident comments. Then use AI to make sense of more post-event feedback.</p>
+      <p class="lead">Gather resident voices. Then use AI to make sense of more post-event feedback.</p>
     </div>
 
     <div class="card">
@@ -58,15 +58,15 @@
     <section id="phaseGround" class="phase-view">
       <div class="card tint focus-card">
         <div class="eyebrow">Round 1</div>
-        <h1 class="phase-hero-title">Hear 8 resident voices.</h1>
-        <p class="lead"><strong>8 people. 8 stations.</strong><br>Each person reads one resident’s Family Day feedback and brings back the 4-digit code.</p>
+        <h1 class="phase-hero-title">Resident Voices.</h1>
+        <p class="lead">Each person reads a resident’s Family Day feedback and brings back the <strong>number representing the resident voice</strong>.</p>
       </div>
 
       <div class="card">
         <div class="progress-row">
           <div>
-            <div class="section-label">Resident comments collected</div>
-            <div class="big-count"><span id="foundCount">0</span><span class="count-total"> / 8</span></div>
+            <div class="section-label">Resident Voices</div>
+            <div class="big-count"><span id="foundCount">0</span></div>
           </div>
           <div class="progress-wrap">
             <div class="progress"><span id="foundBar" style="width:0%"></span></div>
@@ -75,9 +75,9 @@
         </div>
 
         <form id="discoverForm" novalidate>
-          <label for="stationCode">Enter a 4-digit station code</label>
+          <label for="stationCode">Enter the number representing the resident voice</label>
           <input id="stationCode" class="code-input" inputmode="numeric" autocomplete="one-time-code" enterkeyhint="done" maxlength="4" placeholder="0000" aria-describedby="discoverMessage">
-          <button id="discoverBtn" class="btn full" type="submit" disabled>Add comment</button>
+          <button id="discoverBtn" class="btn full" type="submit" disabled>Add voice</button>
           <p id="discoverMessage" class="field-help" role="status"></p>
         </form>
 
@@ -88,14 +88,13 @@
     <section id="phaseAI" class="phase-view hidden">
       <div class="card tint focus-card">
         <div class="eyebrow">Round 2</div>
-        <h1 class="phase-hero-title">Now add more feedback.</h1>
-        <p class="lead">AI combines your 8 resident comments with more Family Day feedback captured from online forms and other means.</p>
+        <h1 class="phase-hero-title">AI combines your resident voices with more Family Day feedback captured from online forms and other means.</h1>
       </div>
 
       <div class="card">
         <div class="stat-row two-stat" aria-label="Information being analysed">
           <div class="stat-big"><strong>More</strong><span>post-event feedback</span></div>
-          <div class="stat-big"><strong id="groundStat">0</strong><span>resident comments</span></div>
+          <div class="stat-big"><strong id="groundStat">0</strong><span>resident voices</span></div>
         </div>
         <p class="micro-note centred">Captured after Family Day from online forms and other means.</p>
         <button id="analyseBtn" class="btn large full" type="button">✨ Analyse the feedback</button>
@@ -103,50 +102,15 @@
       </div>
 
       <div id="analysisResult" class="hidden">
-        <div class="card dashboard-card">
-          <div class="dashboard-head">
+        <div class="card synthesis-card primary-synthesis">
+          <div class="synthesis-header-row">
             <div>
-              <div class="eyebrow">Interactive feedback dashboard</div>
-              <h2>Family Day at a glance</h2>
-              <p class="dashboard-hint">Tap any dashboard item to explore.</p>
+              <div class="eyebrow">AI synthesis</div>
+              <h2 class="synthesis-title">What the feedback is telling us</h2>
             </div>
             <span class="result-tag" id="aiModeBadge">Workshop synthesis</span>
           </div>
-
-          <div class="dashboard-summary">
-            <button class="dash-metric coverage-metric dashboard-trigger" id="coverageTrigger" type="button" data-detail="voices" aria-label="Explore resident voices">
-              <div class="dash-label">Resident voices</div>
-              <div class="dash-number"><span id="coverageCount">0</span><small>/8</small></div>
-              <div id="coverageLabel" class="dash-note">—</div>
-              <div class="tap-cue">Tap to explore →</div>
-            </button>
-
-            <button class="dash-metric mix-metric dashboard-trigger" id="mixTrigger" type="button" data-detail="mix" aria-label="Explore feedback mix">
-              <div class="dash-label">Feedback mix</div>
-              <div id="mixRing" class="mix-ring" style="--praise:50">
-                <div><strong id="mixValue">50%</strong><span>praise</span></div>
-              </div>
-              <div id="mixLabel" class="dash-note">Mixed feedback</div>
-              <div class="tap-cue">Tap to explore →</div>
-            </button>
-          </div>
-
-          <div class="themes-panel">
-            <div class="dash-label">Top themes</div>
-            <div id="themeBars" class="theme-bars"></div>
-          </div>
-
-          <div class="coverage-note" id="coverageNote"></div>
-
-          <div class="dashboard-explore-note">
-            Tap <strong>Resident voices</strong>, <strong>Feedback mix</strong>, or a <strong>Top theme</strong> to explore.
-          </div>
-        </div>
-
-        <div class="card synthesis-card">
-          <div class="eyebrow">AI synthesis</div>
           <div id="insightHeadline" class="insight-headline"></div>
-
           <div class="insight-grid">
             <div class="insight-box positive-box">
               <div class="insight-box-label">✓ What worked</div>
@@ -157,18 +121,47 @@
               <p id="needsAttention"></p>
             </div>
           </div>
-
           <div class="next-step-box">
-            <div class="insight-box-label">→ Next time</div>
+            <div class="insight-box-label">→ Next step</div>
             <p id="recommendedAction"></p>
           </div>
-
           <details class="support-details">
             <summary>Why did AI reach this view?</summary>
             <div id="supportingPoints" class="supporting-points"></div>
           </details>
         </div>
-      </div>
+        <div class="card dashboard-card compact-dashboard">
+          <div class="dashboard-head compact-head">
+            <div>
+              <div class="eyebrow">Interactive dashboard</div>
+              <h2>Explore the feedback</h2>
+              <p class="dashboard-hint">Tap a tile to explore.</p>
+            </div>
+          </div>
+          <div class="dashboard-grid three-up">
+            <button class="dash-tile dashboard-trigger" id="coverageTrigger" type="button" data-detail="voices" aria-label="Explore resident voices">
+              <div class="dash-label">Resident voices</div>
+              <div class="dash-number"><span id="coverageCount">0</span></div>
+              <div id="coverageLabel" class="dash-note">No resident voices yet</div>
+              <div class="tap-cue">Tap to explore →</div>
+            </button>
+            <button class="dash-tile dashboard-trigger mix-tile" id="mixTrigger" type="button" data-detail="mix" aria-label="Explore feedback mix">
+              <div class="dash-label">Feedback mix</div>
+              <div id="mixRing" class="mix-ring" style="--praise:50">
+                <div><strong id="mixValue">50%</strong><span>praise</span></div>
+              </div>
+              <div id="mixLabel" class="dash-note">Mixed feedback</div>
+              <div class="tap-cue">Tap to explore →</div>
+            </button>
+            <div class="dash-tile themes-tile" aria-label="Top themes">
+              <div class="dash-label">Top themes</div>
+              <div id="themeBars" class="theme-chip-list"></div>
+              <div class="tap-cue">Tap a theme to explore →</div>
+            </div>
+          </div>
+          <div class="coverage-note" id="coverageNote"></div>
+        </div>
+      </div>      </div>
     </section>
 
     <section id="phaseDebrief" class="phase-view hidden">
